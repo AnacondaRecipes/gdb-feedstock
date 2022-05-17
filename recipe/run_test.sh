@@ -37,8 +37,8 @@ fi
 # - https://github.com/python/cpython/blob/master/Tools/gdb/libpython.py
 # - https://devguide.python.org/gdb
 
-echo "CONDA_PY:$CONDA_PY"
-export CONDA_PY=`python -c "import sys;print('%s%s'%sys.version_info[:2])"`
+echo "CONDA_PY:$CONDA_PY:$PYTHON:$CONDA_PYTHON_EXE"
+export CONDA_PY=`${CONDA_PYTHON_EX} -c "import sys;print('%s%s'%sys.version_info[:2])"`
 echo "CONDA_PY:$CONDA_PY"
 
 if [[ $(uname) == "Darwin" ]]; then
