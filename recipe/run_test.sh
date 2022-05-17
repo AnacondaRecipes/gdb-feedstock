@@ -70,7 +70,10 @@ fi
 # debugged out-of-the-box with this gdb package. When things change, there is not much to be
 # done besides adding or removing versions from this list.
 # Example: insufficient_debug_info_versions=("27" "37")
-insufficient_debug_info_versions=("39")
+insufficient_debug_info_versions=("39" "310")
+
+echo "GDB output:"
+cat gdb_output
 
 if [[ " ${insufficient_debug_info_versions[@]} " =~ " ${CONDA_PY} " ]]; then
     if grep "line 3" gdb_output; then
