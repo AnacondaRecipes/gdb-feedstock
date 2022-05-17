@@ -32,7 +32,7 @@ end
 ' >> "$PREFIX/etc/gdbinit"
 
 # macOS specificities
-if [[ $target_platform == "osx-64" ]]; then
+if [[ $target_platform == "osx-*" ]]; then
   # prevent a VERSION file being confused by clang++ with $CONDA_PREFIX/include/c++/v1/version
   mv intl/VERSION intl/VERSION.txt
   # install needed scripts to generate a codesigning certificate and sign the gdb executable
@@ -62,12 +62,32 @@ export CXXFLAGS="${CXXFLAGS} -std=gnu++17"
 mkdir build
 cd build
 
+export ac_cv_func_strncmp_works=yes
+export CONFIG_SHELL="/bin/bash"
+export SHELL="/bin/bash"
+
 $SRC_DIR/configure \
     --prefix="$PREFIX" \
     --with-separate-debug-dir="$PREFIX/lib/debug:/usr/lib/debug" \
     --with-python=${PYTHON} \
     --with-system-gdbinit="$PREFIX/etc/gdbinit" \
-    ${libiconv_flag:-} \
+    --disable-werror                                                   \
+    --without-uiout                                                    \
+    --disable-gdbtk                                                    \
+    --without-x                                                        \
+    --disable-sim                                                       \
+    --with-curses                                                      \
+    --with-expat                                                       \
+    --without-libexpat-prefix                                          \
+    --enable-64bit-bfd                                                 \
+    --disable-multilib                                                 \
+    --disable-binutils                                                 \
+    --disable-ld                                                       \
+    --disable-gas                                                      \
+    --enable-threads                                                   \
+    --disable-nls                                                      \
+    --disable-inprocess-agent                                          \
+     ${libiconv_flag:-} \
     ${expat_flag:-} \
     || (cat config.log && exit 1)
 make -j${CPU_COUNT} VERBOSE=1
