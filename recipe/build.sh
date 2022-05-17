@@ -75,10 +75,7 @@ $SRC_DIR/configure \
     --without-uiout                                                    \
     --disable-gdbtk                                                    \
     --without-x                                                        \
-    --disable-sim                                                       \
-    --with-curses                                                      \
-    --with-expat                                                       \
-    --without-libexpat-prefix                                          \
+    --disable-sim                                                      \
     --enable-64bit-bfd                                                 \
     --disable-multilib                                                 \
     --disable-binutils                                                 \
@@ -87,7 +84,7 @@ $SRC_DIR/configure \
     --enable-threads                                                   \
     --disable-nls                                                      \
     --disable-inprocess-agent                                          \
-     ${libiconv_flag:-} \
+    ${libiconv_flag:-} \
     ${expat_flag:-} \
     || (cat config.log && exit 1)
 make -j${CPU_COUNT} VERBOSE=1
