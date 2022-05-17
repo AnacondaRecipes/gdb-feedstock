@@ -75,14 +75,8 @@ $SRC_DIR/configure \
     --without-uiout                                                    \
     --disable-gdbtk                                                    \
     --without-x                                                        \
-    --disable-sim                                                      \
     --enable-64bit-bfd                                                 \
-    --disable-multilib                                                 \
-    --disable-binutils                                                 \
-    --disable-ld                                                       \
-    --disable-gas                                                      \
     --disable-nls                                                      \
-    --disable-inprocess-agent                                          \
     ${libiconv_flag:-} \
     ${expat_flag:-} \
     || (cat config.log && exit 1)

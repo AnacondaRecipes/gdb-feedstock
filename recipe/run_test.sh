@@ -1,4 +1,7 @@
-#!/usr/bin/env bash -ex
+#!/bin/bash
+
+echo "Running test ..."
+set -ex
 
 # Make sure we are not prompted for a password before running an executable in GDB on macOS
 if [[ $(uname) == "Darwin" ]]; then
