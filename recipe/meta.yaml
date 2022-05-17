@@ -18,7 +18,7 @@ build:
   # needed by macOS codesigning script
   script_env:
     - TMPDIR
-  ignore_run_export:
+  ignore_run_exports:
     - readline
 requirements:
   build:
