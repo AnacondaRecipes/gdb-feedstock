@@ -81,7 +81,6 @@ $SRC_DIR/configure \
     --disable-binutils                                                 \
     --disable-ld                                                       \
     --disable-gas                                                      \
-    --enable-threads                                                   \
     --disable-nls                                                      \
     --disable-inprocess-agent                                          \
     ${libiconv_flag:-} \
