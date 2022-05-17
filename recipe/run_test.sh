@@ -78,8 +78,7 @@ cat gdb_output
 if [[ " ${insufficient_debug_info_versions[@]} " =~ " ${CONDA_PY} " ]]; then
     if grep "line 3" gdb_output; then
         echo "This test was expected to fail due to missing debug info in python"
-        echo "As it passed the test should be re-enabled"
-        exit 1
+        echo "As it passed the test should be re-enabled for python ${CONDA_PY}"
     fi
 else
     # We are lucky! This Python version has enough debug info for us to easily identify
