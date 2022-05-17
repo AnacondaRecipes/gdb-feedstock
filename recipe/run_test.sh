@@ -37,7 +37,6 @@ fi
 # - https://github.com/python/cpython/blob/master/Tools/gdb/libpython.py
 # - https://devguide.python.org/gdb
 
-echo "CONDA_PY:$CONDA_PY"
 export CONDA_PY=`${PYTHON} -c "import sys;print('%s%s'%sys.version_info[:2])"`
 echo "CONDA_PY:$CONDA_PY"
 
@@ -70,15 +69,20 @@ fi
 # debugged out-of-the-box with this gdb package. When things change, there is not much to be
 # done besides adding or removing versions from this list.
 # Example: insufficient_debug_info_versions=("27" "37")
-insufficient_debug_info_versions=("39" "310")
+insufficient_debug_info_versions=("36" "37" "38" "39" "310")
 
 echo "GDB output:"
 cat gdb_output
 
 if [[ " ${insufficient_debug_info_versions[@]} " =~ " ${CONDA_PY} " ]]; then
     if grep "line 3" gdb_output; then
-        echo "This test was expected to fail due to missing debug info in python"
-        echo "As it passed the test should be re-enabled for python ${CONDA_PY}"
+        grep "line 3" gdb_output
+        grep "process_to_debug.py" gdb_output
+        grep 'os.kill(os.getpid(), signal.SIGSEGV)' gdb_output
+    else
+        grep "line 3" gdb_output || echo "no line 3" ||true
+        grep "process_to_debug.py" gdb_output || echo "python frame not found" || true
+        grep 'os.kill(os.getpid(), signal.SIGSEGV)' gdb_output || echo "no source" || true
     fi
 else
     # We are lucky! This Python version has enough debug info for us to easily identify
