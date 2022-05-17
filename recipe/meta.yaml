@@ -28,6 +28,7 @@ requirements:
     - make >=3.82
     - sysroot_linux-64 2.17  # [linux64]
     - patch
+    - curl
   host:
     - python
     - ncurses
