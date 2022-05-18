@@ -54,7 +54,7 @@ fi
 
 gdb -batch -ex "run" -ex "py-bt" --args python "$RECIPE_DIR/testing/process_to_debug.py" | tee gdb_output
 if [[ "$CONDA_PY" != "27" ]]; then
-    grep "built-in method kill" gdb_output
+    grep "built-in method kill" gdb_output || echo "no python call stack?" || true
 fi
 
 # Unfortunately some python packages do not have enough debug info for py-bt
