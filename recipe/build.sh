@@ -32,9 +32,10 @@ end
 ' >> "$PREFIX/etc/gdbinit"
 
 # macOS specificities
-if [[ $target_platform == "osx-*" ]]; then
+if [[ $target_platform == osx-* ]]; then
   # prevent a VERSION file being confused by clang++ with $CONDA_PREFIX/include/c++/v1/version
   mv intl/VERSION intl/VERSION.txt
+  chmod +x $RECIPE_DIR/macos-codesign/*.sh
   # install needed scripts to generate a codesigning certificate and sign the gdb executable
   cp $RECIPE_DIR/macos-codesign/macos-setup-codesign.sh $PREFIX/bin/
   cp $RECIPE_DIR/macos-codesign/macos-codesign-gdb.sh   $PREFIX/bin/
