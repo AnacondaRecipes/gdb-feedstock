@@ -20,6 +20,8 @@ build:
     - TMPDIR
   ignore_run_exports:
     - readline
+    - xz           # [osx]
+    - gettext      # [osx]
   missing_dso_whitelist:
     - $RPATH/ld64.so.1
 requirements:
