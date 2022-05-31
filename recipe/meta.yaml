@@ -1,4 +1,4 @@
-{% set build_num = gcc_version_build_number %}
+{% set build_num = 0 %}
 
 # You can use this to allow investigating errors in more recent glibcs than
 # you have RPMs to make the sysroot packages from.
