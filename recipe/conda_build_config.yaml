@@ -1,0 +1,6 @@
+gcc_version:
+  - 11.2.0
+gdb_version:
+   - 11.2
+bootstrapping:  # [osx]
+   - yes        # [osx]
