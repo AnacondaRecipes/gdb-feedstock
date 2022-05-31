@@ -20,8 +20,6 @@ build:
   # We do not have CDT packages yet, nor compilers that would use them!
   missing_dso_whitelist:
     - "*"
-  ignore_run_exports: # [linux]
-    - libstdcxx-ng    # [linux]
   skip: True  # [not linux]
 
 requirements:
@@ -53,6 +51,8 @@ outputs:
     script: install_scripts/install-gdb-pretty-printer.sh
     build:
       number: {{ build_num }}
+      ignore_run_exports:   # [linux]
+        - libstdcxx-ng      # [linux]
     requirements:
       host:
         - python
