@@ -74,11 +74,13 @@ outputs:
         - /lib64/*  # [linux]
       ignore_run_exports:  # [linux]
         - libstdcxx-ng     # [linux]
+        - libgcc-ng        # [linux]
     requirements:
       host:
         - python
       run:
         - libstdxx-ng  # [linux]
+        - libgcc-ng    # [linux]
         - python
         - ncurses
         - six
