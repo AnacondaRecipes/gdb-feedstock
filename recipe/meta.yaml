@@ -75,6 +75,7 @@ outputs:
       ignore_run_exports:  # [linux]
         - libstdcxx-ng     # [linux]
         - libgcc-ng        # [linux]
+        - lib/libstdc++.so.6   # [linux]
     requirements:
       host:
         - python
