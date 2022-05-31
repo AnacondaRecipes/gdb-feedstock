@@ -25,10 +25,10 @@ pushd "${WDIR}/build/libiconv-host"
         --disable-nls
 
     echo "Building libiconv ..."
-    make CC="${HOST}-gcc -pipe ${HOST_CFLAG}"
+    make CC="${HOST}-${CFG_CC} -pipe ${HOST_CFLAG}"
 
     echo "Installing libiconv ..."
-    make CC="${HOST}-gcc -pipe ${HOST_CFLAG}" install
+    make CC="${HOST}-${CFG_CC} -pipe ${HOST_CFLAG}" install
 
 popd
 

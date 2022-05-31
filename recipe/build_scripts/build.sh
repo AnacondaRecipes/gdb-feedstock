@@ -45,7 +45,9 @@ mkdir -p "${WDIR}/build"
 mkdir -p "${WDIR}/buildtools/bin"
 
 echo "Making build system tools available with poisoned name"
-for tool in ar as dlltool gcc g++ gcj gnatbind gnatmake ld libtool nm objcopy objdump ranlib strip windres; do
+for tool in ar as dlltool c++ c++filt cpp cc gcc gcc-ar gcc-nm gcc-ranlib \
+            g++ gcj gnatbind gnatmake ld libtool nm objcopy objdump ranlib \
+            strip windres clang clang++; do
     where=$(which "${ORG_HOST}-${tool}" 2>/dev/null || true)
     [ -z "${where}" ] && where=$(which "${tool}" 2>/dev/null || true)
 
@@ -55,14 +57,20 @@ for tool in ar as dlltool gcc g++ gcj gnatbind gnatmake ld libtool nm objcopy ob
     fi
 done
 
+# for ncurses sake on powerpc and s390x we create a symlink for gcc
+pushd "${WDIR}/buildtools/bin"
+ln -s "${HOST}-${CFG_CC}" ${CFG_CC}
+ln -s "${HOST}-${CFG_CXX}" ${CFG_CXX} || true
+popd
+
 printf "#!/bin/bash\n$(which makeinfo 2>/dev/null || true) --force \"\${@}\"\ntrue\n" >"${WDIR}/buildtools/bin/makeinfo"
 chmod 700 "${WDIR}/buildtools/bin/makeinfo"
 
 echo "Checking that we can run gcc --version and being able to compile program ..."
-"${HOST}-gcc" --version
+"${HOST}-${CFG_CC}" --version
     
 printf "int main()\n{\n  return 0;\n}\n" >"${WDIR}/build/test.c"
-"${HOST}-gcc" -pipe ${HOST_CFLAG} ${HOST_LDFLAG} "${WDIR}/build/test.c" -o "${WDIR}/build/out"
+"${HOST}-${CFG_CXX}" -pipe ${HOST_CFLAG} ${HOST_LDFLAG} "${WDIR}/build/test.c" -o "${WDIR}/build/out"
 rm -f "${WDIR}/build/test.c" "${WDIR}/build/out"
 
 echo "Starting the build ..."

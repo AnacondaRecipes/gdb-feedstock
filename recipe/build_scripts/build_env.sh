@@ -36,6 +36,22 @@ case "${target_platform}" in
       ;;
 esac
 
+case "${target_platform}" in
+  osx*)
+    CFG_CC="clang"
+    CFG_CPP="clang -E"
+    CFG_CXX="clang++"
+    ;;
+  *)
+    CFG_CC="gcc"
+    CFG_CPP="cpp"
+    CFG_CXX="g++"
+    ;;
+esac
+
+export CFG_CXX
+export CFG_CC
+export CFG_CPP
 export CFG_GLIBC_VER
 export CFG_ARCH
 
@@ -70,7 +86,7 @@ fi
 # we can't use conda's HOST compiler ...
 # so we pick system-compiler instead
 if [ -z "${HOST}" ]; then
-   HOST=$(gcc -dumpmachine)
+   HOST=$(${CFG_CC} -dumpmachine)
 fi
 
 export CFG_TARGET
@@ -104,7 +120,7 @@ export PATH="${WDIR}/gcc_built/bin:${WDIR}/buildtools/bin:${PATH}"
 CLANG_CFLAGS=
 OSX_CFLAGS=
 OSX_LDFLAGS=
-if ${HOST}-gcc --version 2>&1 | grep clang; then
+if ${HOST}-${CFG_CC} --version 2>&1 | grep clang; then
     CLANG_CFLAGS=" -Qunused-arguments"
 fi
 case "${HOST}" in

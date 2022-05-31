@@ -26,10 +26,10 @@ gdb.events.new_objfile.connect(setup_python)
 end
 ' >> "$PREFIX/etc/gdbinit"
 
-    CC_FOR_BUILD="${HOST}-gcc"                                             \
-    CPP="${CFG_TARGET}-cpp"                                                \
-    CC="${CFG_TARGET}-gcc"                                                 \
-    CXX="${CFG_TARGET}-g++"                                                \
+    CC_FOR_BUILD="${HOST}-${CFG_CC}"                                       \
+    CPP="${CFG_TARGET}-${CFG_CPP}"                                         \
+    CC="${CFG_TARGET}-${CFG_CC}"                                           \
+    CXX="${CFG_TARGET}-${CFG_CXX}"                                         \
     LD="${CFG_TARGET}-ld"                                                  \
     CFLAGS="${ARCH_CFLAG}"                                                 \
     CXXFLAGS="${ARCH_CFLAG}"                                               \

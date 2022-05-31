@@ -13,7 +13,7 @@ rm -rf "${WDIR}/build/mpfr-host"
 mkdir "${WDIR}/build/mpfr-host"
 pushd "${WDIR}/build/mpfr-host"
 
-    CC="${HOST}-gcc"                    \
+    CC="${HOST}-${CFG_CC}"              \
     CFLAGS="-pipe ${HOST_CFLAG}"        \
     LDFLAGS="${HOST_LDFLAG}"            \
     bash "${WDIR}/mpfr/configure"       \

@@ -19,8 +19,8 @@ rm -rf "${WDIR}/build/gmp-target"
 mkdir "${WDIR}/build/gmp-target"
 pushd "${WDIR}/build/gmp-target"
 
-    CC="${CFG_TARGET}-gcc"                    \
-    CXX="${CFG_TARGET}-g++"                   \
+    CC="${CFG_TARGET}-${CFG_CC}"              \
+    CXX="${CFG_TARGET}-${CFG_CXX}"            \
     CFLAGS="${ARCH_CFLAG} -fexceptions"       \
     CXXFLAGS="${ARCH_CFLAG}"                  \
     LDFLAGS="${TARGET_LDFLAG} ${ARCH_LDFLAG}" \

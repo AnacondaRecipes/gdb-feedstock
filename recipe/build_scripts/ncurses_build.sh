@@ -4,6 +4,8 @@ set -e
 
 . ${RECIPE_DIR}/build_scripts/build_env.sh
 
+set -ex
+
 rm -rf "${WDIR}/build/ncurses-build"
 mkdir "${WDIR}/build/ncurses-build"
 pushd "${WDIR}/build/ncurses-build"

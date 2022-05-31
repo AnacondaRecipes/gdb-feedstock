@@ -8,7 +8,7 @@ rm -rf "${WDIR}/build/libelf-target"
 mkdir -p "${WDIR}/build/libelf-target"
 pushd "${WDIR}/build/libelf-target"
 
-    CC="${CFG_TARGET}-gcc"          \
+    CC="${CFG_TARGET}-${CFG_CC}"    \
     RANLIB="${CFG_TARGET}-ranlib"   \
     CFLAGS="${ARCH_CFLAG} -fPIC"    \
     LDFLAGS="${TARGET_LDFLAG}"      \

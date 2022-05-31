@@ -19,7 +19,7 @@ rm -rf "${WDIR}/build/gmp-host"
 mkdir "${WDIR}/build/gmp-host"
 pushd "${WDIR}/build/gmp-host"
 
-    CC="${HOST}-gcc"                          \
+    CC="${HOST}-${CFG_CC}"                    \
     CFLAGS="-pipe ${HOST_CFLAG} -fexceptions" \
     LDFLAGS="${HOST_LDFLAG}"                  \
     bash "${WDIR}/gmp/configure"              \
