@@ -20,7 +20,9 @@ build:
   # We do not have CDT packages yet, nor compilers that would use them!
   missing_dso_whitelist:
     - "*"
-  skip: True  # [not unix]
+  ignore_run_exports:
+    - zlib
+  skip: True  # [not linux]
 
 requirements:
   build:
@@ -69,7 +71,9 @@ outputs:
     build:
       number: {{ build_num }}
       missing_dso_whitelist:
-        - "*"
+        - /lib64/*  # [linux]
+      ignore_run_exports:
+        - zlib
     requirements:
       host:
         - python
