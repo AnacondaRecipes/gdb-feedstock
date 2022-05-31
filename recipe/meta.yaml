@@ -20,8 +20,8 @@ build:
   # We do not have CDT packages yet, nor compilers that would use them!
   missing_dso_whitelist:
     - "*"
-  ignore_run_exports:
-    - zlib
+  ignore_run_exports: # [linux]
+    - libstdcxx-ng    # [linux]
   skip: True  # [not linux]
 
 requirements:
@@ -59,7 +59,7 @@ outputs:
       run:
         - python
         - gdb >={{ gdb_version }}
-        - libstdcxx-ng >={{ gcc_version }}
+        - libstdcxx-ng >={{ gcc_version }}  # [linux]
     about:
       summary: GNU Compiler Collection Python Pretty Printers
       home: https://gcc.gnu.org/
@@ -72,17 +72,16 @@ outputs:
       number: {{ build_num }}
       missing_dso_whitelist:
         - /lib64/*  # [linux]
-      ignore_run_exports:
-        - zlib
+      ignore_run_exports:  # [linux]
+        - libstdcxx-ng     # [linux]
     requirements:
       host:
         - python
       run:
-        - libstdxx-ng
+        - libstdxx-ng  # [linux]
         - python
         - ncurses
         - six
-        - zlib
         - xz
         - pygments
 
