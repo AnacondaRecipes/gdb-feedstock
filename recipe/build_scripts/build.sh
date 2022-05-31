@@ -5,8 +5,8 @@ set -e
 . ${RECIPE_DIR}/build_scripts/build_env.sh
 
 if [ $(id -u) -eq 0 ]; then
-    echo "You cannot run this script as root"
-    exit 1
+    echo "You shouldnot run this script as root"
+#    exit 1
 fi
 
 n_open_files=$(ulimit -n)
