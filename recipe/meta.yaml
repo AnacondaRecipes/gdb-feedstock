@@ -1,85 +1,104 @@
-{% set name = "gdb" %}
-{% set version = "11.2" %}
+{% set build_num = gcc_version_build_number %}
+
+# You can use this to allow investigating errors in more recent glibcs than
+# you have RPMs to make the sysroot packages from.
+{% set hack_sysroot_ver = False %}
+# {% set hack_sysroot_ver = '2.17' %}
 
 package:
-  name: {{ name }}
-  version: {{ version }}
+  name: gcc-compiler
+  version: {{ gcc_version }}
 
 source:
-  url: http://ftp.gnu.org/gnu/gdb/gdb-{{ version }}.tar.xz
-  sha256: 1497c36a71881b8671a9a84a0ee40faab788ca30d7ba19d8463c3cc787152e32
-  patches:
-    - 0001-gdb-darwin-remove-not-so-harmless-spurious-call-to-w.patch
-    - 0002-gdb-darwin-skip-over-WIFSTOPPED-wait4-status.patch
+  path: .
 
 build:
-  number: 0
-  skip: true  # [win]
-  # needed by macOS codesigning script
-  script_env:
-    - TMPDIR
-  ignore_run_exports:
-    - readline
-    - xz           # [osx]
-    - gettext      # [osx]
+  merge_build_host: False
+  # defined in conda_build_config.yaml so that we can keep it associated with a particular GCC version number
+  number: {{ build_num | default(0) }}
+  # The CentOS7 system libraries should be used for everything here.
+  # We do not have CDT packages yet, nor compilers that would use them!
   missing_dso_whitelist:
-    - $RPATH/ld64.so.1
+    - "*"
+
 requirements:
   build:
-    - {{ compiler('fortran') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - make >=3.82
-    - sysroot_linux-64 2.17  # [linux64]
+    # instead we install this dependency during build
+    - llvm-tools  # [osx]
+    - make
+    - bash        # [not (ppc64le or s390x or aarch64)]
+    - autoconf 
+    - automake
+    - libtool
+    - bison
+    - flex
+    - sed
     - patch
-    - curl
+    - gawk
+    - m4
+    - help2man
+    - texinfo
+    - git
+    - python
+    # - libpython-static
   host:
     - python
-    - ncurses
-    - texinfo
-    - xz
-    - zlib
-    - readline
-    - libiconv  # [osx]
-    - gettext   # [osx]
-    - expat     # [osx]
-    - gmp
-  run:
-    - python
-    - ncurses
-    - xz
-    - zlib
-    - six
-    - libiconv  # [osx]
-    - gettext   # [osx]
-    - expat     # [osx]
-    - pygments
+outputs:
+  - name: gdb-pretty-printer
+    version: {{ gcc_version }}
+    script: install_scripts/install-gdb-pretty-printer.sh
+    build:
+      number: {{ build_num }}
+    requirements:
+      host:
+        - python
+      run:
+        - python
+        - gdb >={{ gdb_version }}
+        - libstdcxx-ng >={{ gcc_version }}
+    about:
+      summary: GNU Compiler Collection Python Printers
+      home: https://gcc.gnu.org/
+      license: GPL-3.0-only WITH GCC-exception-3.1
+  - name: gdb
+    target: {{ target_platform }}
+    version: {{ gdb_version }}
+    script: install_scripts/install-gdb.sh
+    build:
+      number: {{ build_num }}
+    requirements:
+      host:
+        - python
+      run:
+        - python
+        - ncurses
+        - six
+        - zlib
+        - xz
+        - pygments
 
-test:
-  commands:
-    - gdb --version
-  requires:
-    - {{ compiler('c') }}
+    test:
+      commands:
+        - gdb --version
+    about:
+      summary: The GNU Project Debugger
+      home: https://www.gnu.org/software/gdb/
+      license: GPL
 
+# make the linter happy
 about:
-  home: https://www.gnu.org/software/gdb/
-  license: GPL-3.0-only
-  license_family: GPL
-  license_file: gdb/COPYING
-  summary: GDB, the GNU Project debugger, allows you to see what is going on inside another program while it executes -- or what another program was doing at the moment it crashed.
-  description: |
-    GDB, the GNU Project debugger, allows you to see what is going on `inside'
-    another program while it executes -- or what another program was doing at
-    the moment it crashed.
-    The program being debugged can be written in Ada, C, C++, Objective-C,
-    Pascal (and many other languages). Those programs might be executing on the
-    same machine as GDB (native) or on another machine (remote).
-    GDB can run on most popular UNIX and Microsoft Windows variants.
-  doc_url: https://sourceware.org/gdb/current/onlinedocs/gdb/
-  dev_url: git://sourceware.org/git/binutils-gdb.git
+  summary: GNU Compiler Collection
+  home: https://gcc.gnu.org/
+  license: GPL-3.0-only WITH GCC-exception-3.1
+  license_file:
+    - gcc/COPYING
+    - gcc/COPYING.lib
+    - gcc/COPYING.RUNTIME
+    - gcc/COPYING3
+    - COPYING3.lib
 
 extra:
   recipe-maintainers:
-    - gqmelo
-    - marcelotrevisani
-    - phil-blain
+    - katietz
