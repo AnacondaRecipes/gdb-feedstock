@@ -68,10 +68,13 @@ outputs:
     script: install_scripts/install-gdb.sh
     build:
       number: {{ build_num }}
+      missing_dso_whitelist:
+        - "*"
     requirements:
       host:
         - python
       run:
+        - libstdxx-ng
         - python
         - ncurses
         - six
