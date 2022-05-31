@@ -20,6 +20,7 @@ build:
   # We do not have CDT packages yet, nor compilers that would use them!
   missing_dso_whitelist:
     - "*"
+  skip: True  # [not unix]
 
 requirements:
   build:
@@ -42,7 +43,6 @@ requirements:
     - texinfo
     - git
     - python
-    # - libpython-static
   host:
     - python
 outputs:
@@ -59,7 +59,7 @@ outputs:
         - gdb >={{ gdb_version }}
         - libstdcxx-ng >={{ gcc_version }}
     about:
-      summary: GNU Compiler Collection Python Printers
+      summary: GNU Compiler Collection Python Pretty Printers
       home: https://gcc.gnu.org/
       license: GPL-3.0-only WITH GCC-exception-3.1
   - name: gdb

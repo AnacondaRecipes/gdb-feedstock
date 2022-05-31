@@ -17,6 +17,13 @@ if [[ ${target_platform} =~ osx-.* ]]; then
   ln -s ${BUILD_PREFIX}/bin/llvm-objcopy ${BUILD_PREFIX}/bin/objcopy
   chmod +x ${BUILD_PREFIX}/bin/objcopy
   unset CC CXX
+  COMPILER_C="clang"
+  COMPILER_CXX="clangxx"
+  COMPILER_BINUTILS="cctools"
+else
+  COMPILER_C="gcc"
+  COMPILER_CXX="gxx"
+  COMPILER_BINUTILS="binutils"
 fi
 
 if [[ $(uname) == Linux ]]; then
@@ -26,7 +33,9 @@ fi
 if [[ "${bootstrapping}" != "yes" ]]; then
   # Use own compilers instead of relying on ones from the docker image/system
   conda create -p $SRC_DIR/compilers \
-                  gcc_${target_platform} gxx_${target_platform} binutils \
+                  ${COMPILER_C}_${target_platform} \
+                  ${COMPILER_CXX}_${target_platform} \
+                  ${COMPILER_BINUTILS} \
                   make gawk sed libtool --yes --quiet
 fi
 

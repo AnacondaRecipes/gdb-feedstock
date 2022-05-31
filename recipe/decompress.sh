@@ -6,7 +6,11 @@ set -e
 echo "Fetching sources ..."
 
 rm -rf gcc_toolchain-sources
-git clone -b "gcc-11.2-${target_platform}" https://github.com/AnacondaRecipes/gcc_toolchain-sources
+if [[ ${target_platform} =~ osx-.* ]]; then
+  git clone -b "gcc-11.2-linux-64" https://github.com/AnacondaRecipes/gcc_toolchain-sources
+else
+  git clone -b "gcc-11.2-${target_platform}" https://github.com/AnacondaRecipes/gcc_toolchain-sources
+fi
 
 echo "Extracting sources ..."
 
