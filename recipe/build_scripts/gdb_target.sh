@@ -15,17 +15,6 @@ pushd "${WDIR}/build/gdb-cross"
 
     mkdir -p "${PREFIX}"/etc
 
-    echo '
-python
-import gdb
-import sys
-import os
-def setup_python(event):
-    import libpython
-gdb.events.new_objfile.connect(setup_python)
-end
-' >> "$PREFIX/etc/gdbinit"
-
     CC_FOR_BUILD="${HOST}-${CFG_CC}"                                       \
     CPP="${CFG_TARGET}-${CFG_CPP}"                                         \
     CC="${CFG_TARGET}-${CFG_CC}"                                           \
@@ -64,7 +53,6 @@ end
         --disable-inprocess-agent                                          \
         --with-python=${PYTHON}
 
-    # --with-python=$PYTHON ...
     echo "Building gdb ..."
     make
 
@@ -74,5 +62,7 @@ end
 
     unset ac_cv_func_strncmp_works
 
+    mkdir -p "$PREFIX"/etc
+    rm -rf "$PREFIX"/etc/gdbinit
 popd
 
