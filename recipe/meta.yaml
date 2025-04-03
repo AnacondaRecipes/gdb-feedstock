@@ -1,4 +1,4 @@
-{% set build_num = 2 %}
+{% set build_num = 3 %}
 
 # You can use this to allow investigating errors in more recent glibcs than
 # you have RPMs to make the sysroot packages from.
@@ -36,7 +36,6 @@ requirements:
     - bison
     - flex
     - sed
-    - patch
     - gawk
     - m4
     - help2man
@@ -45,6 +44,8 @@ requirements:
     - python
   host:
     - python
+    # Python 3.12 removed distutils from the stdlib. setuptools adds it back.
+    - setuptools  # [py>=312]
 outputs:
   - name: gdb-pretty-printer
     version: {{ gcc_version }}
@@ -98,16 +99,26 @@ outputs:
 
 # make the linter happy
 about:
-  summary: GNU Compiler Collection
+  summary: This is GDB, the GNU source-level debugger.
+  description: |
+    GDB, the GNU Project debugger, allows you to see what is going on `inside' another program while it executes -- or
+    what another program was doing at the moment it crashed.
   home: https://gcc.gnu.org/
   license: GPL-3.0-only WITH GCC-exception-3.1
+  license_family: GPL3
   license_file:
     - gcc/COPYING
     - gcc/COPYING.lib
     - gcc/COPYING.RUNTIME
     - gcc/COPYING3
     - COPYING3.lib
+  dev_url: https://sourceware.org/git/gitweb.cgi?p=binutils-gdb.git
+  doc_url: https://www.sourceware.org/gdb/documentation
 
 extra:
+  skip-lints:
+    - missing_tests
+    - missing_imports_or_run_test_py
+    - cbc_dep_in_run_missing_from_host
   recipe-maintainers:
     - katietz
