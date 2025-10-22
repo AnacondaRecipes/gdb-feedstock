@@ -17,6 +17,10 @@ build:
   script_env:
     - TMPDIR
 
+# AnacondaRecipes has been resynced with conda-forge and the
+# gdb-pretty-printer output has been moved to
+# ctng-compilers-feedstock.
+
 requirements:
   build:
     - python                                 # [build_platform != target_platform]
@@ -31,22 +35,30 @@ requirements:
     - python
     - ncurses
     - texinfo
-    - liblzma-devel
+    - xz
     - zlib
     - readline
     - libiconv
-    - expat     # [osx]
+    - expat
     - gmp
     - mpfr
+    # python .../python-config.py --ldflags report -lcrypt for 3.9 and
+    # 3.10 which is subsequently used during configure and later
+    # during make. libcrypt-devel has the libcrypt.so itself
+    - libxcrypt-devel-el8-aarch64  # [linux and aarch64 and py<311]
+    - libxcrypt-devel-el8-x86_64   # [linux and x86_64 and py<311]
   run:
     - python
     - ncurses
-    - liblzma-devel
+    - xz
     - zlib
     - six
     - libiconv
-    - expat     # [osx]
+    - expat
     - pygments
+    # Just the libcrypt.so.x* files at runtime
+    - libxcrypt-el8-aarch64  # [linux and aarch64 and py<311]
+    - libxcrypt-el8-x86_64   # [linux and x86_64 and py<311]
 
 test:
   commands:

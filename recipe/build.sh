@@ -56,6 +56,15 @@ fi
 export CPPFLAGS="$CPPFLAGS -I$PREFIX/include"
 export CXXFLAGS="${CXXFLAGS} -std=gnu++17"
 
+# gdb/configure want to -lcrypt when testing python (3.9 and 3.10) and
+# libxcrypt*-el8-* installs into
+# ${PREFIX}/${arch}-conda-linux-gnu/sysroot/lib64
+sysroot_lib=( ${PREFIX}/*-conda-linux-gnu/sysroot/lib64 )
+if [[ -d "${sysroot_lib}" ]] ; then
+    export LDFLAGS="${LDFLAGS} -L${sysroot_lib}"
+    CPPFLAGS="${CPPFLAGS} -L${sysroot_lib}"
+fi
+
 # Setting /usr/lib/debug as debug dir makes it possible to debug the system's
 # python on most Linux distributions
 
