@@ -31,6 +31,10 @@ requirements:
     - {{ stdlib("c") }}
     - {{ compiler('cxx') }}
     - make >=3.82
+    # python .../python-config.py --ldflags report -lcrypt for 3.9 and
+    # 3.10 which is subsequently used during configure and later
+    # during make. libcrypt-devel has the libcrypt.so itself
+    - {{ cdt('libxcrypt-devel') }}  # [linux and py<311]
   host:
     - python
     - ncurses
@@ -42,11 +46,6 @@ requirements:
     - expat
     - gmp
     - mpfr
-    # python .../python-config.py --ldflags report -lcrypt for 3.9 and
-    # 3.10 which is subsequently used during configure and later
-    # during make. libcrypt-devel has the libcrypt.so itself
-    - libxcrypt-devel-el8-aarch64  # [linux and aarch64 and py<311]
-    - libxcrypt-devel-el8-x86_64   # [linux and x86_64 and py<311]
   run:
     - python
     - ncurses
@@ -56,9 +55,6 @@ requirements:
     - libiconv
     - expat
     - pygments
-    # Just the libcrypt.so.x* files at runtime
-    - libxcrypt-el8-aarch64  # [linux and aarch64 and py<311]
-    - libxcrypt-el8-x86_64   # [linux and x86_64 and py<311]
 
 test:
   commands:
