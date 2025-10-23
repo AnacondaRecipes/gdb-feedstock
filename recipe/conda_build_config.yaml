@@ -2,5 +2,6 @@ c_compiler_version:        # [linux or osx]
   - 14.3.0                 # [linux]
 cxx_compiler_version:      # [linux or osx]
   - 14.3.0                 # [linux]
-fortran_compiler_version:
-  - 14.3.0                 # [osx or linux]
+fortran_compiler_version:  # [linux or osx]
+  - 14.3.0                 # [linux]
+  - 11.3.0                 # [osx]
