@@ -12,11 +12,6 @@ source:
 
 build:
   number: 2
-  # For osx we can use the gfortran 11.3.0 compiler but the use of gdb
-  # require codesigned privileges, see macos-codesign-gdb.sh:
-  #
-  # Due to macOS security restrictions, the GDB executable
-  # needs to be codesigned to be able to control other processes
   skip: true  # [win]
   # On osx:
   # *** This configuration is not supported in the following subdirectories:
