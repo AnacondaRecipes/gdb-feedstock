@@ -41,15 +41,15 @@ requirements:
     - {{ cdt('libxcrypt-devel') }}  # [linux and py<311]
   host:
     - python
-    - ncurses
-    - texinfo
-    - xz
-    - zlib
-    - readline
-    - libiconv
-    - expat
-    - gmp
-    - mpfr
+    - ncurses {{ ncurses }}
+    - texinfo 6.5
+    - xz {{ xz }}
+    - zlib {{ zlib }}
+    - readline {{ readline }}
+    - libiconv {{ libiconv }}
+    - expat {{ expat }}
+    - gmp {{ gmp }}
+    - mpfr {{ mpfr }}
   run:
     - python
     - ncurses
