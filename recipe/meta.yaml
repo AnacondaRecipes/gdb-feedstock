@@ -6,14 +6,15 @@ package:
   version: {{ version }}
 
 source:
-  url: https://ftp.gnu.org/gnu/gdb/gdb-{{ version }}.tar.xz
+  url:
+    - https://ftp.gnu.org/gnu/gdb/gdb-{{ version }}.tar.xz
+    - https://mirrors.ocf.berkeley.edu/gnu/gdb/gdb-{{ version }}.tar.xz
   sha256: 2d4dd8061d8ded12b6c63f55e45344881e8226105f4d2a9b234040efa5ce7772
   patches:
 
 build:
   number: 0
-  skip: true  # [win]
-  # needed by macOS codesigning script
+  skip: true  # [not linux]
   script_env:
     - TMPDIR
 
@@ -21,33 +22,38 @@ requirements:
   build:
     - {{ compiler('fortran') }}
     - {{ compiler('c') }}
+    - {{ stdlib('c') }}
     - {{ compiler('cxx') }}
     - make >=3.82
-    - sysroot_linux-64 2.17  # [linux64]
+    # python .../python-config.py --ldflags report -lcrypt for 3.9 and
+    # 3.10 which is subsequently used during configure and later
+    # during make. libcrypt-devel has the libcrypt.so itself
+    - {{ cdt('libxcrypt-devel') }}  # [py<311]
   host:
     - python
-    - ncurses
-    - texinfo
-    - xz
-    - zlib
-    - readline
-    - libiconv  # [osx]
-    - expat     # [osx]
-    - gmp
-    - mpfr
+    - ncurses {{ ncurses }}
+    - texinfo 6.5
+    - xz {{ xz }}
+    - zlib {{ zlib }}
+    - readline {{ readline }}
+    - libiconv {{ libiconv }}
+    - expat {{ expat }}
+    - gmp {{ gmp }}
+    - mpfr {{ mpfr }}
   run:
     - python
     - ncurses
     - xz
     - zlib
     - six
-    - libiconv  # [osx]
-    - expat     # [osx]
+    - libiconv
+    - expat
     - pygments
 
 test:
   commands:
-    - gdb --version
+    - $PREFIX/bin/gdb --version
+    - $PREFIX/bin/gdb -q -ex "show host-charset" --batch
   requires:
     - {{ compiler('c') }}
 
@@ -66,7 +72,7 @@ about:
     same machine as GDB (native) or on another machine (remote).
     GDB can run on most popular UNIX and Microsoft Windows variants.
   doc_url: https://sourceware.org/gdb/current/onlinedocs/gdb/
-  dev_url: git://sourceware.org/git/binutils-gdb.git
+  dev_url: https://sourceware.org/git/binutils-gdb.git
 
 extra:
   recipe-maintainers:

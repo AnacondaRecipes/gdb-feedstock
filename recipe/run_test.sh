@@ -12,11 +12,15 @@ fi
 # Check source code highlighting works (using Pygments)
 gdb -ex "show style sources" -batch | grep "enabled"
 
-# Run hello world test
-if [[ $(uname) != "Darwin" ]]; then # skip test for now, as it hangs on Azure's 10.15 image
-  $CC -o hello -g "$RECIPE_DIR/testing/hello.c"
-  gdb -batch -ex "run" --args hello
+if [[ $(uname -m) == "ppc64le" || $(uname -m) == "aarch64" ]]; then
+  # Emulated docker images do not provide sufficient support for gdb
+  # https://github.com/docker/for-mac/issues/5191
+  exit 0
 fi
+
+# Run hello world test
+$CC -o hello -g "$RECIPE_DIR/testing/hello.c"
+gdb -batch -ex "run" --args hello
 
 # This next test tries to simulate a crash on a python process. The process under test
 # forces a crash by emitting a SIGSEGV signal to itself. This is similar to what
@@ -63,7 +67,7 @@ gdb -batch -ex "run" -ex "py-bt" --args python "$RECIPE_DIR/testing/process_to_d
 # debugged out-of-the-box with this gdb package. When things change, there is not much to be
 # done besides adding or removing versions from this list.
 # Example: insufficient_debug_info_versions=("27" "37")
-insufficient_debug_info_versions=("312")
+insufficient_debug_info_versions=("312" "313")
 
 if [[ " ${insufficient_debug_info_versions[@]} " =~ " ${CONDA_PY} " ]]; then
     if grep "line 3" gdb_output; then
