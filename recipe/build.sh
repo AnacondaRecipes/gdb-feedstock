@@ -60,6 +60,10 @@ export CXXFLAGS="${CXXFLAGS} -std=gnu++17"
 mkdir build
 cd build
 
+# Disable building .info docs to avoid Perl/texinfo ABI mismatch (e.g. pl526 vs system Perl).
+# Set before configure so generated Makefiles get it; pass to make so submakes inherit it.
+export MAKEINFO=true
+
 $SRC_DIR/configure \
     --prefix="$PREFIX" \
     --with-separate-debug-dir="$PREFIX/lib/debug:/usr/lib/debug" \
@@ -69,8 +73,11 @@ $SRC_DIR/configure \
     --with-libiconv-prefix=$PREFIX \
     ${expat_flag:-} \
     || (cat config.log && exit 1)
-# Disable building .info docs to avoid Perl/texinfo ABI mismatch (e.g. pl526 vs system Perl)
-export MAKEINFO=true
+# Force all generated Makefiles to use MAKEINFO=true so submakes (bfd, etc.) don't run makeinfo.
+# Configure bakes MAKEINFO path into Makefiles; env/command-line don't propagate to all submakes.
+for f in $(find . -name Makefile); do
+  sed -i.bak 's/^MAKEINFO *=.*/MAKEINFO = true/' "$f" || true
+done
 make -j${CPU_COUNT} VERBOSE=1
 make install
 
