@@ -69,6 +69,8 @@ $SRC_DIR/configure \
     --with-libiconv-prefix=$PREFIX \
     ${expat_flag:-} \
     || (cat config.log && exit 1)
+# Disable building .info docs to avoid Perl/texinfo ABI mismatch (e.g. pl526 vs system Perl)
+export MAKEINFO=true
 make -j${CPU_COUNT} VERBOSE=1
 make install
 
