@@ -73,11 +73,6 @@ $SRC_DIR/configure \
     --with-libiconv-prefix=$PREFIX \
     ${expat_flag:-} \
     || (cat config.log && exit 1)
-# Force all generated Makefiles to use MAKEINFO=true so submakes (bfd, etc.) don't run makeinfo.
-# Configure bakes MAKEINFO path into Makefiles; env/command-line don't propagate to all submakes.
-for f in $(find . -name Makefile); do
-  sed -i.bak 's/^MAKEINFO *=.*/MAKEINFO = true/' "$f" || true
-done
+
 make -j${CPU_COUNT} VERBOSE=1
 make install
-
