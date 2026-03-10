@@ -2,6 +2,11 @@
 
 set -eu
 
+# Only run macOS-specific logic on Darwin; exit successfully on Linux and other platforms
+if [[ $(uname) != "Darwin" ]]; then
+  exit 0
+fi
+
 # Returns 0 if current user is in the sudoers file
 # and sudo-ing does not require a password.
 can_sudo_without_password () {

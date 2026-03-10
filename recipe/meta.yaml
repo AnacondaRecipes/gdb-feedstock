@@ -14,7 +14,8 @@ source:
 
 build:
   number: 0
-  skip: true  # [not linux]
+  # py==313: GDB 14.2 uses _PyOS_ReadlineTState (removed in Python 3.13 C API)
+  skip: true  # [not linux or py==313]
   script_env:
     - TMPDIR
 
