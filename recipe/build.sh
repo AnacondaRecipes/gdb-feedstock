@@ -60,10 +60,6 @@ export CXXFLAGS="${CXXFLAGS} -std=gnu++17"
 mkdir build
 cd build
 
-# Disable building .info docs to avoid Perl/texinfo ABI mismatch (e.g. pl526 vs system Perl).
-# Set before configure so generated Makefiles get it; pass to make so submakes inherit it.
-export MAKEINFO=true
-
 $SRC_DIR/configure \
     --prefix="$PREFIX" \
     --with-separate-debug-dir="$PREFIX/lib/debug:/usr/lib/debug" \
@@ -74,5 +70,5 @@ $SRC_DIR/configure \
     ${expat_flag:-} \
     || (cat config.log && exit 1)
 
-make -j${CPU_COUNT} VERBOSE=1
+make VERBOSE=2
 make install
