@@ -31,6 +31,8 @@ requirements:
     - {{ cdt('libxcrypt-devel') }}  # [py<311]
   host:
     - python
+    # match texinfo's pl526 build (avoid makeinfo Perl XS ABI mismatch)
+    - perl =5.26.*
     - ncurses {{ ncurses }}
     - texinfo 6.5
     - xz {{ xz }}
