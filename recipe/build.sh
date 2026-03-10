@@ -70,5 +70,5 @@ $SRC_DIR/configure \
     ${expat_flag:-} \
     || (cat config.log && exit 1)
 
-make VERBOSE=2
+make -j${CPU_COUNT} VERBOSE=1
 make install
