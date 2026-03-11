@@ -39,8 +39,8 @@ requirements:
     - xz {{ xz }}
     - zlib {{ zlib }}
     - readline {{ readline }}
-    - libiconv {{ libiconv }} # [osx]
-    - expat {{ expat }}
+    - libiconv {{ libiconv }}  # [osx]
+    - libexpat {{ libexpat }}
     - gmp {{ gmp }}
     - mpfr {{ mpfr }}
   run:
@@ -49,8 +49,8 @@ requirements:
     - xz
     - zlib
     - six
-    - libiconv
-    - expat
+    - libiconv  # [osx]
+    - libexpat
     - pygments
 
 test:
