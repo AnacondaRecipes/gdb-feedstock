@@ -32,9 +32,7 @@ end
 ' >> "$PREFIX/etc/gdbinit"
 
 # macOS specificities
-if [[ $target_platform == "osx-64" ]]; then
-  # prevent a VERSION file being confused by clang++ with $CONDA_PREFIX/include/c++/v1/version
-  mv intl/VERSION intl/VERSION.txt
+if [[ $target_platform == "osx-*" ]]; then
   # install needed scripts to generate a codesigning certificate and sign the gdb executable
   cp $RECIPE_DIR/macos-codesign/macos-setup-codesign.sh $PREFIX/bin/
   cp $RECIPE_DIR/macos-codesign/macos-codesign-gdb.sh   $PREFIX/bin/
@@ -67,9 +65,10 @@ $SRC_DIR/configure \
     --with-separate-debug-dir="$PREFIX/lib/debug:/usr/lib/debug" \
     --with-python=${PYTHON} \
     --with-system-gdbinit="$PREFIX/etc/gdbinit" \
-    ${libiconv_flag:-} \
+    --with-system-zlib \
+    --with-libiconv-prefix=$PREFIX \
     ${expat_flag:-} \
     || (cat config.log && exit 1)
+
 make -j${CPU_COUNT} VERBOSE=1
 make install
-
