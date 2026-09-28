@@ -22,6 +22,9 @@ build:
   # needed by macOS codesigning script
   script_env:
     - TMPDIR
+  ignore_run_exports:
+    # libgfortran is only needed for the tests.
+    - libgfortran5
 
 # AnacondaRecipes has been resynced with conda-forge and the
 # gdb-pretty-printer output has been moved to
@@ -46,20 +49,20 @@ requirements:
     - ncurses {{ ncurses }}
     - texinfo 6.5
     - xz {{ xz }}
-    - zlib {{ zlib }}
+    - libzlib 1.3
     - readline {{ readline }}
     - libiconv {{ libiconv }}
-    - expat {{ expat }}
+    - libexpat {{ libexpat }}
     - gmp {{ gmp }}
     - mpfr {{ mpfr }}
   run:
     - python
     - ncurses
     - xz
-    - zlib
+    - libzlib
     - six
     - libiconv
-    - expat
+    - libexpat
     - pygments
 
 test:
