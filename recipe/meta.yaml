@@ -13,7 +13,7 @@ source:
   patches:
 
 build:
-  number: 2
+  number: 3
   # On osx:
   # *** This configuration is not supported in the following subdirectories:
   #      zlib gdbserver gdb sim
