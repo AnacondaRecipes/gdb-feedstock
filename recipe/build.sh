@@ -62,6 +62,8 @@ export CXXFLAGS="${CXXFLAGS} -std=gnu++17"
 mkdir build
 cd build
 
+# zstd is implicitly enable if found. So it's enable it explicitly
+# to make things consistent and make our package more reproducible.
 $SRC_DIR/configure \
     --prefix="$PREFIX" \
     --with-separate-debug-dir="$PREFIX/lib/debug:/usr/lib/debug" \
@@ -69,6 +71,7 @@ $SRC_DIR/configure \
     --with-system-gdbinit="$PREFIX/etc/gdbinit" \
     --with-system-zlib \
     --with-system-readline \
+    --with-zstd \
     --with-libiconv-prefix=$PREFIX \
     ${expat_flag:-} \
     || (cat config.log && exit 1)

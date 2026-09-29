@@ -44,6 +44,7 @@ requirements:
     # 3.10 which is subsequently used during configure and later
     # during make. libcrypt-devel has the libcrypt.so itself
     - {{ cdt('libxcrypt-devel') }}  # [linux and py<311]
+    - pkg-config
   host:
     - python
     - ncurses {{ ncurses }}
@@ -55,6 +56,7 @@ requirements:
     - libexpat {{ libexpat }}
     - gmp {{ gmp }}
     - mpfr {{ mpfr }}
+    - zstd {{ zstd }}
   run:
     - python
     - ncurses
@@ -64,6 +66,7 @@ requirements:
     - libiconv
     - libexpat
     - pygments
+    - zstd
 
 test:
   commands:
