@@ -13,7 +13,7 @@ source:
   patches:
 
 build:
-  number: 2
+  number: 3
   # On osx:
   # *** This configuration is not supported in the following subdirectories:
   #      zlib gdbserver gdb sim
@@ -22,6 +22,9 @@ build:
   # needed by macOS codesigning script
   script_env:
     - TMPDIR
+  ignore_run_exports:
+    # libgfortran is only needed for the tests.
+    - libgfortran5
 
 # AnacondaRecipes has been resynced with conda-forge and the
 # gdb-pretty-printer output has been moved to
@@ -41,26 +44,29 @@ requirements:
     # 3.10 which is subsequently used during configure and later
     # during make. libcrypt-devel has the libcrypt.so itself
     - {{ cdt('libxcrypt-devel') }}  # [linux and py<311]
+    - pkg-config
   host:
     - python
     - ncurses {{ ncurses }}
     - texinfo 6.5
     - xz {{ xz }}
-    - zlib {{ zlib }}
+    - libzlib 1.3
     - readline {{ readline }}
     - libiconv {{ libiconv }}
-    - expat {{ expat }}
+    - libexpat {{ libexpat }}
     - gmp {{ gmp }}
     - mpfr {{ mpfr }}
+    - zstd {{ zstd }}
   run:
     - python
     - ncurses
     - xz
-    - zlib
+    - libzlib
     - six
     - libiconv
-    - expat
+    - libexpat
     - pygments
+    - zstd
 
 test:
   commands:
