@@ -52,6 +52,7 @@ requirements:
     - expat {{ expat }}
     - gmp {{ gmp }}
     - mpfr {{ mpfr }}
+    - zstd {{ zstd }}
   run:
     - python
     - ncurses
@@ -61,6 +62,7 @@ requirements:
     - libiconv
     - expat
     - pygments
+    - zstd
 
 test:
   commands:
