@@ -68,7 +68,7 @@ gdb -batch -ex "run" -ex "py-bt" --args python "$RECIPE_DIR/testing/process_to_d
 # debugged out-of-the-box with this gdb package. When things change, there is not much to be
 # done besides adding or removing versions from this list.
 # Example: insufficient_debug_info_versions=("27" "37")
-insufficient_debug_info_versions=("312" "313")
+insufficient_debug_info_versions=()
 
 if [[ " ${insufficient_debug_info_versions[@]} " =~ " ${CONDA_PY} " ]]; then
     if grep "line 3" gdb_output; then
@@ -81,7 +81,12 @@ if [[ " ${insufficient_debug_info_versions[@]} " =~ " ${CONDA_PY} " ]]; then
 else
     # We are lucky! This Python version has enough debug info for us to easily identify
     # the exact Python code where the crash happened.
-    grep "built-in method kill" gdb_output
+    # Skip the first grep for python >= 3.14 because the stack trace output is different
+    # and the string no longer exists. This is not a problem with gdb, it is caused by
+    # a change in the python interpreter.
+    if [[ $CONDA_PY -lt 314 ]]; then
+        grep "built-in method kill" gdb_output
+    fi
     grep "line 3" gdb_output
     grep "process_to_debug.py" gdb_output
     grep 'os.kill(os.getpid(), signal.SIGSEGV)' gdb_output
